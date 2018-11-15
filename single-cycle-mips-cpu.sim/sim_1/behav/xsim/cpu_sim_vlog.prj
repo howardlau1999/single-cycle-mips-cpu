@@ -1,0 +1,17 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  \
+"../../../../src/ALU.v" \
+"../../../../src/ALU_control.v" \
+"../../../../src/cpu.v" \
+"../../../../src/cpu_control.v" \
+"../../../../src/data_mem.v" \
+"../../../../src/debug_screen.v" \
+"../../../../src/inst_mem.v" \
+"../../../../src/reg_file.v" \
+"../../../../single-cycle-mips-cpu.srcs/sim_1/new/cpu_sim.v" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

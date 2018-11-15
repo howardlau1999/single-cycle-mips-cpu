@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2018.1 (64-bit)
+# SW Build 2188600 on Wed Apr  4 18:39:19 MDT 2018
+# IP Build 2185939 on Wed Apr  4 20:55:05 MDT 2018
+# Start of session at: Thu Nov 15 21:07:18 2018
+# Process ID: 5280
+# Current directory: /home/howard/single-cycle-mips-cpu/single-cycle-mips-cpu.runs/impl_1
+# Command line: vivado -log vga_display.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source vga_display.tcl -notrace
+# Log file: /home/howard/single-cycle-mips-cpu/single-cycle-mips-cpu.runs/impl_1/vga_display.vdi
+# Journal file: /home/howard/single-cycle-mips-cpu/single-cycle-mips-cpu.runs/impl_1/vivado.jou
+#-----------------------------------------------------------
+source vga_display.tcl -notrace

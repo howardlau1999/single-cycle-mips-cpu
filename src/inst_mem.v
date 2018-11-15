@@ -22,15 +22,19 @@
 
 module inst_mem # (
     parameter ENTRIES = 128,
-	parameter CODE_DATA = "C:/Users/Liuhaohua/Desktop/project_1/test_single_cycle.txt"
+	parameter CODE_DATA = "/home/howard/single-cycle-mips-cpu/src/test_single_cycle.txt"
 )
 (
 		input wire 	[31:0] 	addr,
 		output wire [31:0] 	data);
 
-	reg [31:0] mem [0:ENTRIES - 1];
+	reg [7:0] mem [0:ENTRIES - 1];
 	initial begin
 		$readmemb(CODE_DATA, mem);
 	end
-	assign data = mem[addr[31:2]][31:0];
+	assign data[31:24] = mem[addr];
+	assign data[23:16] = mem[addr + 1];
+	assign data[15:8]  = mem[addr + 2];
+	assign data[7:0]   = mem[addr + 3];
+	
 endmodule

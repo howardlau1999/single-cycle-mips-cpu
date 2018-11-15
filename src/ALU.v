@@ -21,7 +21,7 @@ module ALU(
 	assign oflow_add = (a[31] == b[31] && add_ab[31] != a[31]) ? 1 : 0;
 	assign oflow_sub = (a[31] == b[31] && sub_ab[31] != a[31]) ? 1 : 0;
 
-	assign oflow = (control == 4'b0010) ? oflow_add : oflow_sub;
+	assign oflow = (control == 4'b0000) ? oflow_add : oflow_sub;
 
 	// set if less than, 2s compliment 32-bit numbers
 	assign slt = oflow_sub ? ~(a[31]) : a[31];

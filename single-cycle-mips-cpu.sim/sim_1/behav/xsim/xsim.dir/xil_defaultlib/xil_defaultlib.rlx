@@ -1,0 +1,14 @@
+0.6
+2018.1
+Apr  4 2018
+18:43:17
+/home/howard/single-cycle-mips-cpu/single-cycle-mips-cpu.sim/sim_1/behav/xsim/glbl.v,1522801934,verilog,,,,glbl,,,,,,,,
+/home/howard/single-cycle-mips-cpu/single-cycle-mips-cpu.srcs/sim_1/new/cpu_sim.v,1542283884,verilog,,,,cpu_sim,,,,,,,,
+/home/howard/single-cycle-mips-cpu/src/ALU.v,1542282927,verilog,,/home/howard/single-cycle-mips-cpu/src/ALU_control.v,,ALU,,,,,,,,
+/home/howard/single-cycle-mips-cpu/src/ALU_control.v,1542282788,verilog,,/home/howard/single-cycle-mips-cpu/src/cpu.v,,ALU_control,,,,,,,,
+/home/howard/single-cycle-mips-cpu/src/cpu.v,1542283102,verilog,,/home/howard/single-cycle-mips-cpu/src/cpu_control.v,,cpu,,,,,,,,
+/home/howard/single-cycle-mips-cpu/src/cpu_control.v,1542284773,verilog,,/home/howard/single-cycle-mips-cpu/src/data_mem.v,,cpu_control,,,,,,,,
+/home/howard/single-cycle-mips-cpu/src/data_mem.v,1542279628,verilog,,/home/howard/single-cycle-mips-cpu/src/debug_screen.v,,data_mem,,,,,,,,
+/home/howard/single-cycle-mips-cpu/src/debug_screen.v,1542279628,verilog,,/home/howard/single-cycle-mips-cpu/src/inst_mem.v,,debug_screen,,,,,,,,
+/home/howard/single-cycle-mips-cpu/src/inst_mem.v,1542284088,verilog,,/home/howard/single-cycle-mips-cpu/src/reg_file.v,,inst_mem,,,,,,,,
+/home/howard/single-cycle-mips-cpu/src/reg_file.v,1542279628,verilog,,/home/howard/single-cycle-mips-cpu/single-cycle-mips-cpu.srcs/sim_1/new/cpu_sim.v,,reg_file,,,,,,,,

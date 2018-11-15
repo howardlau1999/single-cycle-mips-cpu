@@ -19,7 +19,7 @@ module ALU_control(
 			6'b010011:  alu_funct = 4'd3;  /* or */
 			6'b011000:  alu_funct = 4'd2;  /* sll */
 			6'b011100:  alu_funct = 4'd6;  /* slti */
-			
+			6'b110010:  alu_funct = 4'd6;
 //			4'd6:  alu_funct = 4'd13;	/* xor */
 //			4'd7:  alu_funct = 4'd12;	/* nor */
 //			4'd10: alu_funct = 4'd7;	/* slt */

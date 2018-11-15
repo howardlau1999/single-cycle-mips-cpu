@@ -91,6 +91,10 @@ module cpu_control(
                 branch_ltz <= 1'b1;
                 regwrite  <= 1'b0;
             end
+            6'b011100: begin	/* slti */
+                alusrc_b   <= 1'b1;
+                regdst  <= 1'b0;
+            end
 			6'b111000: begin	/* j jump */
 				jump <= 1'b1;
 			end

@@ -21,9 +21,9 @@
 
 
 module reg_file(
-		input wire			clk,
-		input wire  [4:0]	read1, read2, dbg_read,
-		output wire [31:0]	data1, data2, dbg_data,
+		input wire			clk, rst,
+		input wire  [4:0]	read1, read2, dbg_read, led_read,
+		output wire [31:0]	data1, data2, dbg_data, led_data,
 		input wire			regwrite,
 		input wire	[4:0]	wrreg,
 		input wire	[31:0]	wrdata);
@@ -39,8 +39,13 @@ module reg_file(
 	assign data1 = (read1 == 5'd0) ? 32'b0 : mem[read1];
     assign data2 = (read2 == 5'd0) ? 32'b0 : mem[read2];
     assign dbg_data = (dbg_read == 5'd0) ? 32'b0 : mem[dbg_read];
-    
+    assign led_data = (led_read == 5'd0) ? 32'b0 : mem[led_read];
 	always @ (negedge clk) begin
+	    if (rst) begin
+	       for (i = 0; i < 32; i=i+1) begin
+                mem[i] = 32'd0;
+            end
+	    end else
 		if (regwrite && wrreg != 5'd0) begin
 			mem[wrreg] <= wrdata;
 		end

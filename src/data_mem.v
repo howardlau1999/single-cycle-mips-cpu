@@ -24,7 +24,7 @@ module data_mem # (
     parameter ENTRIES = 32    
 )
 (
-        input wire			clk,
+        input wire			clk, rst,
 		input wire	[clogb2(ENTRIES-1)-1:0]	addr,
 		input wire			rd, wr,
 		input wire 	[31:0]	wdata,
@@ -39,6 +39,11 @@ module data_mem # (
         end
     end
 	always @(negedge clk) begin
+	    if (rst) begin
+	       for (i = 0; i < ENTRIES; i = i + 1) begin
+                mem[i] = 8'd0;
+            end
+	    end else
 		if (wr) begin
 			mem[addr] <= wdata[31:24];
 			mem[addr + 1] <= wdata[23:16];

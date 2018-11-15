@@ -21,12 +21,15 @@
 
 
 module cpu(
-    input wire clk,
+    input wire clk, rst,
     output wire bg_wrt,
     output wire [12:0] bam_addr,
     output wire [7:0] bam_write_data,
     input  wire dbg_clk,
-    output reg  [31:0] pc
+    
+    output reg  [31:0] pc, next_pc, 
+    input  wire [31:0] led_read,
+    output wire [31:0] led_reg_data, led_rs, led_rt, led_alurslt, led_db
     );
     reg  [31:0] pc4;
     wire [31:0] inst;
@@ -60,17 +63,31 @@ module cpu(
     
     wire [4:0]  dbg_reg;
     wire [31:0] dbg_reg_data;
+    
+    reg working;
     initial begin
         pc4 = 0;
+        pc = 0;
+        working = 0;
     end
     always @ * begin
-    pc4 = pc + 4;
+        pc4 = pc + 4;
+        if (pcsrc) next_pc = baddr;
+        else if (jump) next_pc <= jaddr;
+        else if (halt | ~working) next_pc <= pc; 
+        else next_pc <= pc4;
     end
     always @ (posedge clk) begin
-        if (pcsrc) pc <= baddr;
-        else if (jump) pc <= jaddr;
-        else if (halt) pc <= pc; 
-        else pc <= pc4;
+        if (rst) begin
+            pc <= 0;
+            working <= 0;
+        end else begin
+            if (pcsrc) pc <= baddr;
+            else if (jump) pc <= jaddr;
+            else if (halt | ~working) pc <= pc; 
+            else pc <= pc4;
+            working <= 1;
+        end
     end
    // IF
     inst_mem im(pc, inst);
@@ -88,9 +105,9 @@ module cpu(
     // branch address
     assign baddr = pc4 + (seimm << 2);
   
-    reg_file regs(.clk(clk), 
+    reg_file regs(.clk(clk), .rst(rst),
                   .read1(rs), .read2(rt), .data1(rs_data), .data2(rt_data), 
-                  .dbg_read(dbg_reg), .dbg_data(dbg_reg_data),
+                  .dbg_read(dbg_reg), .dbg_data(dbg_reg_data), .led_read(led_read), .led_data(led_reg_data),
                   .regwrite(regwrite), .wrreg(wrreg), .wrdata(wrdata));
                   
     cpu_control control(.opcode(opcode), .regdst(regdst),
@@ -114,17 +131,23 @@ module cpu(
     // MEM
     assign wrreg = (regdst) ? rd : rt;
     wire [31:0] rdata;
-    data_mem dm(.clk(clk), .addr(alurslt[8:2]), .rd(memread), .wr(memwrite),
+    data_mem dm(.clk(clk), .rst(rst), .addr(alurslt[8:2]), .rd(memread), .wr(memwrite),
             .wdata(rt_data), .rdata(rdata));
             
     always @(*) begin
-        pcsrc = (branch_eq & zero) | (branch_ne & ~zero) | (branch_ltz & zero);
+        pcsrc = (branch_eq & zero) | (branch_ne & ~zero) | (branch_ltz & ~zero);
     end
     
     // WB
     assign wrdata = memtoreg ? rdata : alurslt;
     
-//    debug_screen debug_screen(.clk(dbg_clk), .pc(pc), .reg_data(dbg_reg_data), .reg_addr(dbg_reg),
-//            .inst(inst), .rs(rs), .rt(rt), .rd(rd), .imm(imm), .shamt(shamt), .funct(funct), .alurslt(alurslt),
-//            .bg_wrt(bg_wrt), .bam_addr(bam_addr), .bam_write_data(bam_write_data));    
+    // debug
+    
+    assign led_rs = rs;
+    assign led_rt = rt;
+    assign led_alurslt = alurslt;
+    assign led_db = wrdata;
+    debug_screen debug_screen(.clk(dbg_clk), .pc(pc), .reg_data(dbg_reg_data), .reg_addr(dbg_reg),
+            .inst(inst), .rs(rs), .rt(rt), .rd(rd), .imm(imm), .shamt(shamt), .funct(funct), .alurslt(alurslt),
+            .bg_wrt(bg_wrt), .bam_addr(bam_addr), .bam_write_data(bam_write_data));    
 endmodule
