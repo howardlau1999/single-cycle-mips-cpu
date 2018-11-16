@@ -64,6 +64,9 @@ module cpu(
     wire [4:0]  dbg_reg;
     wire [31:0] dbg_reg_data;
     
+    wire [31:0]  dbg_ram_addr;
+    wire [31:0] dbg_ram_data;
+    
     reg working;
     initial begin
         pc4 = 0;
@@ -131,8 +134,8 @@ module cpu(
     // MEM
     assign wrreg = (regdst) ? rd : rt;
     wire [31:0] rdata;
-    data_mem dm(.clk(clk), .rst(rst), .addr(alurslt[8:2]), .rd(memread), .wr(memwrite),
-            .wdata(rt_data), .rdata(rdata));
+    data_mem dm(.clk(clk), .rst(rst), .addr(alurslt), .rd(memread), .wr(memwrite),
+            .wdata(rt_data), .rdata(rdata), .dbg_ram_addr(dbg_ram_addr), .dbg_ram_data(dbg_ram_data));
             
     always @(*) begin
         pcsrc = (branch_eq & zero) | (branch_ne & ~zero) | (branch_ltz & ~zero);
@@ -147,7 +150,7 @@ module cpu(
     assign led_rt = rt;
     assign led_alurslt = alurslt;
     assign led_db = wrdata;
-    debug_screen debug_screen(.clk(dbg_clk), .pc(pc), .reg_data(dbg_reg_data), .reg_addr(dbg_reg),
+    debug_screen debug_screen(.clk(dbg_clk), .pc(pc), .reg_data(dbg_reg_data), .reg_addr(dbg_reg), .ram_data(dbg_ram_data), .ram_addr(dbg_ram_addr),
             .inst(inst), .rs(rs), .rt(rt), .rd(rd), .imm(imm), .shamt(shamt), .funct(funct), .alurslt(alurslt),
             .bg_wrt(bg_wrt), .bam_addr(bam_addr), .bam_write_data(bam_write_data));    
 endmodule

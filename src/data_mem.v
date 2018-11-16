@@ -28,8 +28,9 @@ module data_mem # (
 		input wire	[clogb2(ENTRIES-1)-1:0]	addr,
 		input wire			rd, wr,
 		input wire 	[31:0]	wdata,
-		output wire	[31:0]	rdata
-		
+		output wire	[31:0]	rdata,
+		input wire [31:0] dbg_ram_addr,
+		output wire [31:0] dbg_ram_data
 );
     integer i;
 	reg [7:0] mem [0:ENTRIES - 1];
@@ -53,7 +54,7 @@ module data_mem # (
 	end
 
 	assign rdata = rd ? {mem[addr + 0][7:0], mem[addr + 1][7:0], mem[addr + 2][7:0], mem[addr + 3][7:0]} :  32'hzzzzzzzz;
-	
+	assign dbg_ram_data = {mem[dbg_ram_addr + 0][7:0], mem[dbg_ram_addr + 1][7:0], mem[dbg_ram_addr + 2][7:0], mem[dbg_ram_addr + 3][7:0]};
 	function integer clogb2;
         input integer depth;
           for (clogb2=0; depth>0; clogb2=clogb2+1)
